@@ -1,0 +1,33 @@
+{
+  "name": "wlist",
+  "version": "1.0.0",
+  "description": "Add weight option to items in lists. They'll order by weight from greatest to lowest",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "keywords": [
+    "weight list",
+    "order list"
+  ],
+  "author": {
+    "name": "Ruben J Garcia",
+    "email": "rubenjgarciab@gmail.com",
+    "url": "https://github.com/rubenjgarcia"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rubenjgarcia/wlist.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^3.10.1"
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "gulp": "^3.9.0",
+    "gulp-jsdoc": "^0.1.5",
+    "gulp-load-plugins": "^1.1.0",
+    "gulp-mocha": "^2.2.0"
+  }
+}
