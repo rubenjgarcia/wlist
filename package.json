@@ -1,6 +1,6 @@
 {
   "name": "wlist",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Add weight option to items in lists. They'll order by weight from greatest to lowest",
   "main": "index.js",
   "scripts": {
