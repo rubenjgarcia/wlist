@@ -67,4 +67,131 @@ describe('Wlist Test', function () {
         done();
     });
 
+    it('should be able to put an item on top', function (done) {
+        wlist.put('item1', 'item1-name', 3);
+        wlist.put('item2', 'item2-name', 2);
+        wlist.put('item3', 'item3-name', -1);
+
+        var items = wlist.get();
+        var expected = ['item3', 'item2', 'item1'];
+
+        expect(items).to.be.eql(expected);
+
+        wlist.before(null, 'item4');
+
+        items = wlist.get();
+        expected = ['item4', 'item3', 'item2', 'item1'];
+
+        expect(items).to.be.eql(expected);
+        done();
+    });
+
+    it('should be able to put an item first and then put another first', function (done) {
+        wlist.put('item1', 'item1-name', 3);
+        wlist.put('item2', 'item2-name', 2);
+        wlist.put('item3', 'item3-name', -1);
+
+        var items = wlist.get();
+        var expected = ['item3', 'item2', 'item1'];
+
+        expect(items).to.be.eql(expected);
+
+        wlist.before(null, 'item4');
+
+        items = wlist.get();
+        expected = ['item4', 'item3', 'item2', 'item1'];
+
+        expect(items).to.be.eql(expected);
+
+        wlist.before(null, 'item5');
+
+        items = wlist.get();
+        expected = ['item5', 'item4', 'item3', 'item2', 'item1'];
+
+        expect(items).to.be.eql(expected);
+        done();
+    });
+
+    it('should be able to put an item before other', function (done) {
+        wlist.put('item1', 'item1-name', 3);
+        wlist.put('item2', 'item2-name', 2);
+        wlist.put('item3', 'item3-name', -1);
+
+        var items = wlist.get();
+        var expected = ['item3', 'item2', 'item1'];
+
+        expect(items).to.be.eql(expected);
+
+        wlist.before('item2-name', 'item4');
+
+        items = wlist.get();
+        expected = ['item3', 'item4', 'item2', 'item1'];
+
+        expect(items).to.be.eql(expected);
+        done();
+    });
+
+    it('should be able to put an item last', function (done) {
+        wlist.put('item1', 'item1-name', 3);
+        wlist.put('item2', 'item2-name', 2);
+        wlist.put('item3', 'item3-name', -1);
+
+        var items = wlist.get();
+        var expected = ['item3', 'item2', 'item1'];
+
+        expect(items).to.be.eql(expected);
+
+        wlist.after(null, 'item4');
+
+        items = wlist.get();
+        expected = ['item3', 'item2', 'item1', 'item4'];
+
+        expect(items).to.be.eql(expected);
+        done();
+    });
+
+    it('should be able to put an item last and then put another last', function (done) {
+        wlist.put('item1', 'item1-name', 3);
+        wlist.put('item2', 'item2-name', 2);
+        wlist.put('item3', 'item3-name', -1);
+
+        var items = wlist.get();
+        var expected = ['item3', 'item2', 'item1'];
+
+        expect(items).to.be.eql(expected);
+
+        wlist.after(null, 'item4');
+
+        items = wlist.get();
+        expected = ['item3', 'item2', 'item1', 'item4'];
+
+        expect(items).to.be.eql(expected);
+
+        wlist.after(null, 'item5');
+
+        items = wlist.get();
+        expected = ['item3', 'item2', 'item1', 'item4', 'item5'];
+
+        expect(items).to.be.eql(expected);
+        done();
+    });
+
+    it('should be able to put an item after other', function (done) {
+        wlist.put('item1', 'item1-name', 3);
+        wlist.put('item2', 'item2-name', 2);
+        wlist.put('item3', 'item3-name', -1);
+
+        var items = wlist.get();
+        var expected = ['item3', 'item2', 'item1'];
+
+        expect(items).to.be.eql(expected);
+
+        wlist.after('item2-name', 'item4');
+
+        items = wlist.get();
+        expected = ['item3', 'item2', 'item4', 'item1'];
+
+        expect(items).to.be.eql(expected);
+        done();
+    });
 });
