@@ -10,6 +10,19 @@ function Wlist() {
     this.items = [];
 }
 
+function insertNewItem(newItem, items) {
+    if (newItem.name) {
+        var foundItem = find(newItem.name, items);
+        if (foundItem) {
+            foundItem.weight = newItem.weight;
+            foundItem.item = newItem.item;
+            return items.length;
+        }
+    }
+
+    return items.push(newItem);
+}
+
 /**
  * @example
  * wlist.put('myitem'); //Adds 'myitem' with weight 0
@@ -18,7 +31,7 @@ function Wlist() {
  * wlist.put('myitem', 3); //Adds 'myitem' with weight 3
  *
  * @example
- * wlist.put({key: value}, 'myitem', 3); //Adds {key: value} with name 'myitem' with weight 3
+ * wlist.put({key: value}, 'myitem', 3); //Adds {key: value} with name 'myitem' with weight 3. If an item with name 'myitem' exists it will be replaced
  *
  * @param {...*} args One param: Item value. Weight set to 0. Two params: Item value and weight. Three params: Item value, item name and weight
  * @returns {Number} Length of item's list
@@ -34,14 +47,11 @@ Wlist.prototype.put = function (args) {
 
     var newItem = {
         item: item,
-        weight: isNaN(weight) ? 0 : parseInt(weight) * 100
+        weight: isNaN(weight) ? 0 : parseInt(weight) * 100,
+        name: (name ? '' + name : undefined)
     };
 
-    if (name) {
-        newItem.name = '' + name;
-    }
-
-    return this.items.push(newItem);
+    return insertNewItem(newItem, this.items);
 };
 
 function insert(items, before, search, item, name) {
@@ -60,14 +70,11 @@ function insert(items, before, search, item, name) {
 
     var newItem = {
         item: item,
-        weight: weight
+        weight: weight,
+        name: (name ? '' + name : undefined)
     };
 
-    if (name) {
-        newItem.name = '' + name;
-    }
-
-    return items.push(newItem);
+    return insertNewItem(newItem, items);
 }
 
 /**
@@ -75,7 +82,7 @@ function insert(items, before, search, item, name) {
  * wlist.before('myitem-name', 'mynewitem'); //Adds 'mynewitem' before 'myitem-name'
  *
  * @example
- * wlist.before('myitem-name', 'mynewitem', 'mynewitem-name'); //Adds 'mynewitem' before 'myitem-name' with name 'mynewitem-name'
+ * wlist.before('myitem-name', 'mynewitem', 'mynewitem-name'); //Adds 'mynewitem' before 'myitem-name' with name 'mynewitem-name'. If an item with name 'mynewitem-name' exists it will be replaced
  *
  * @param [before] {String} Name of the searched item. If null it will be inserted first
  * @param item {*} Our new item
@@ -91,7 +98,7 @@ Wlist.prototype.before = function (before, item, name) {
  * wlist.after('myitem-name', 'mynewitem'); //Adds 'mynewitem' before 'myitem-name'
  *
  * @example
- * wlist.after('myitem-name', 'mynewitem', 'mynewitem-name'); //Adds 'mynewitem' before 'myitem-name' with name 'mynewitem-name'
+ * wlist.after('myitem-name', 'mynewitem', 'mynewitem-name'); //Adds 'mynewitem' before 'myitem-name' with name 'mynewitem-name'. If an item with name 'mynewitem-name' exists it will be replaced
  *
  * @param [after] {String} Name of the searched item. If null it will be inserted last
  * @param item {*} Our new item

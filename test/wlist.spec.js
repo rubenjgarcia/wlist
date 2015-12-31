@@ -194,4 +194,60 @@ describe('Wlist Test', function () {
         expect(items).to.be.eql(expected);
         done();
     });
+
+    it('should overwrite an item if the name is the same', function (done) {
+        wlist.put('item1', 'item1-name', 0);
+        wlist.put('item2', 'item2-name', 0);
+
+        var items = wlist.get();
+        var expected = ['item1', 'item2'];
+
+        expect(items).to.be.eql(expected);
+
+        wlist.put('item3', 'item2-name', 0);
+
+        items = wlist.get();
+        expected = ['item1', 'item3'];
+
+        expect(items).to.be.eql(expected);
+        done();
+    });
+
+    it('should be able to put an item before other replacing the item with the same name', function (done) {
+        wlist.put('item1', 'item1-name', 3);
+        wlist.put('item2', 'item2-name', 2);
+        wlist.put('item3', 'item3-name', -1);
+
+        var items = wlist.get();
+        var expected = ['item3', 'item2', 'item1'];
+
+        expect(items).to.be.eql(expected);
+
+        wlist.before('item1-name', 'item4', 'item3-name');
+
+        items = wlist.get();
+        expected = ['item2', 'item4', 'item1'];
+
+        expect(items).to.be.eql(expected);
+        done();
+    });
+
+    it('should be able to put an item after other replacing the item with the same name', function (done) {
+        wlist.put('item1', 'item1-name', 3);
+        wlist.put('item2', 'item2-name', 2);
+        wlist.put('item3', 'item3-name', -1);
+
+        var items = wlist.get();
+        var expected = ['item3', 'item2', 'item1'];
+
+        expect(items).to.be.eql(expected);
+
+        wlist.after('item3-name', 'item4', 'item1-name');
+
+        items = wlist.get();
+        expected = ['item3', 'item4', 'item2'];
+
+        expect(items).to.be.eql(expected);
+        done();
+    });
 });
