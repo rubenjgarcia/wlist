@@ -46,9 +46,9 @@ wlist.put('item3', 'item3-name', -1);
 
 var items = wlist.get(); // items -> ['item3', 'item2', 'item1']
 var item = wlist.get('item2-name'); // item -> 'item2'
-```
+````
 
-* Insert items before of after others
+* Insert items before or after other
 
 ````
 var Wlist = require('wlist');
