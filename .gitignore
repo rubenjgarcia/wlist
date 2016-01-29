@@ -28,5 +28,6 @@ node_modules
 
 .idea
 /.coverrun
+/.coverdata
 debug
 reports

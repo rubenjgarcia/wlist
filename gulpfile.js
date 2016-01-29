@@ -2,8 +2,9 @@
 
 var gulp = require('gulp')
 var plugins = require('gulp-load-plugins')()
+var runSequence = require('run-sequence')
 
-gulp.task('test', function () {
+gulp.task('test', function (cb) {
   return gulp.src('./test/**/*.spec.js', { read: false })
     .pipe(plugins.coverage.instrument({
       pattern: ['index.js'],
@@ -15,11 +16,22 @@ gulp.task('test', function () {
     .pipe(gulp.dest('reports'))
     .on('error', function (error) {
       console.error(error)
+      cb(error)
       this.emit('end')
     })
 })
 
-gulp.task('jsdoc', function () {
-  gulp.src('index.js')
-    .pipe(plugins.jsdoc())
+gulp.task('jsdoc', function (cb) {
+  gulp.src(['README.md', 'index.js'])
+    .pipe(plugins.jsdoc3({opts: {destination: './doc'}}, cb))
 })
+
+gulp.task('prepare-publish', function () {
+  runSequence('test', 'jsdoc', function (error) {
+    if (error) {
+      return plugins.util.log(error.message)
+    }
+  })
+})
+
+gulp.task('default', ['prepare-publish'])
