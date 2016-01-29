@@ -1,26 +1,24 @@
-'use strict';
-
-var _ = require('lodash');
+'use strict'
 
 /**
  * Creates a new Weight List
  * @constructor
  */
-function Wlist() {
-    this.items = [];
+function Wlist () {
+  this.items = []
 }
 
-function insertNewItem(newItem, items) {
-    if (newItem.name) {
-        var foundItem = find(newItem.name, items);
-        if (foundItem) {
-            foundItem.weight = newItem.weight;
-            foundItem.item = newItem.item;
-            return items.length;
-        }
+function insertNewItem (newItem, items) {
+  if (newItem.name) {
+    var foundItem = find(newItem.name, items)
+    if (foundItem) {
+      foundItem.weight = newItem.weight
+      foundItem.item = newItem.item
+      return items.length
     }
+  }
 
-    return items.push(newItem);
+  return items.push(newItem)
 }
 
 /**
@@ -37,44 +35,43 @@ function insertNewItem(newItem, items) {
  * @returns {Number} Length of item's list
  */
 Wlist.prototype.put = function (args) {
-    if (!arguments || !arguments[0]) {
-        throw new Error('No item is set')
-    }
+  if (!arguments || !arguments[ 0 ]) {
+    throw new Error('No item is set')
+  }
 
-    var item = arguments[0];
-    var name = arguments.length > 2 ? arguments[1] : undefined;
-    var weight = arguments.length > 2 ? arguments[2] : arguments[1];
+  var item = arguments[ 0 ]
+  var name = arguments.length > 2 ? arguments[ 1 ] : undefined
+  var weight = arguments.length > 2 ? arguments[ 2 ] : arguments[ 1 ]
 
-    var newItem = {
-        item: item,
-        weight: isNaN(weight) ? 0 : parseInt(weight) * 100,
-        name: (name ? '' + name : undefined)
-    };
+  var newItem = {
+    item: item,
+    weight: isNaN(weight) ? 0 : parseInt(weight, 10) * 100,
+    name: (name ? '' + name : undefined)
+  }
 
-    return insertNewItem(newItem, this.items);
-};
+  return insertNewItem(newItem, this.items)
+}
 
-function insert(items, before, search, item, name) {
-    if (!item) {
-        throw new Error('Parameter "item" is mandatory')
-    }
+function insert (items, before, search, item, name) {
+  if (!item) {
+    throw new Error('Parameter "item" is mandatory')
+  }
 
-    var weight;
-    if (!search) {
-        weight = items.length ? items[(before ? 0 : items.length - 1)].weight + (before ? -1 : 1) : 0;
-    }
-    else {
-        var foundItem = find(search, items);
-        weight = foundItem.weight + (before ? -1 : 1);
-    }
+  var weight
+  if (!search) {
+    weight = items.length ? items[ (before ? 0 : items.length - 1) ].weight + (before ? -1 : 1) : 0
+  } else {
+    var foundItem = find(search, items)
+    weight = foundItem.weight + (before ? -1 : 1)
+  }
 
-    var newItem = {
-        item: item,
-        weight: weight,
-        name: (name ? '' + name : undefined)
-    };
+  var newItem = {
+    item: item,
+    weight: weight,
+    name: (name ? '' + name : undefined)
+  }
 
-    return insertNewItem(newItem, items);
+  return insertNewItem(newItem, items)
 }
 
 /**
@@ -90,8 +87,8 @@ function insert(items, before, search, item, name) {
  * @returns {Number} Length of item's list
  */
 Wlist.prototype.before = function (before, item, name) {
-    return insert(this.items, true, before, item, name);
-};
+  return insert(this.items, true, before, item, name)
+}
 
 /**
  * @example
@@ -106,16 +103,27 @@ Wlist.prototype.before = function (before, item, name) {
  * @returns {Number} Length of item's list
  */
 Wlist.prototype.after = function (after, item, name) {
-    return insert(this.items, false, after, item, name);
-};
+  return insert(this.items, false, after, item, name)
+}
 
 /**
  * @private
  * @param name
+ * @param items
  * @returns {*}
  */
-function find(name, items) {
-    return _.find(items, {name: name});
+function find (name, items) {
+  if (!items || !items.length || items.length === 0) {
+    return null
+  }
+
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].name && items[i].name === name) {
+      return items[i]
+    }
+  }
+
+  return null
 }
 
 /**
@@ -124,17 +132,17 @@ function find(name, items) {
  * @returns {Array|*} If name is provided returns the item with that name, else returns the item list ordered by weight from lowest to greatest
  */
 Wlist.prototype.get = function (name) {
-    if (name) {
-        var foundItem = find(name, this.items);
-        return foundItem ? foundItem.item : undefined;
-    }
+  if (name) {
+    var foundItem = find(name, this.items)
+    return foundItem ? foundItem.item : undefined
+  }
 
-    this.items.sort(compare);
+  this.items.sort(compare)
 
-    return this.items.map(function (item) {
-        return item.item;
-    });
-};
+  return this.items.map(function (item) {
+    return item.item
+  })
+}
 
 /**
  * @private
@@ -142,8 +150,17 @@ Wlist.prototype.get = function (name) {
  * @param item2
  * @returns {number}
  */
-function compare(item1, item2) {
-    return item1.weight - item2.weight;
+function compare (item1, item2) {
+  return item1.weight - item2.weight
 }
 
-module.exports = Wlist;
+/**
+ *
+ * @param {String} name Item name to find
+ * @returns {boolean} Returns if the list has an item with the provided name
+ */
+Wlist.prototype.hasItem = function (name) {
+  return find(name, this.items) !== null
+}
+
+module.exports = Wlist

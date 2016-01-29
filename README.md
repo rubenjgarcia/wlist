@@ -1,4 +1,6 @@
 # wlist
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+
 A library to order lists in Node based on weight
 
 Install using npm
@@ -66,3 +68,5 @@ items = wlist.get(); // items -> ['item3', 'item4', 'item2', 'item1']
 wlist.after('item2-name', 'item5');
 items = wlist.get(); // items -> ['item3', 'item4', 'item2', 'item5', 'item1']
 ````
+
+For more information see the JSDoc
