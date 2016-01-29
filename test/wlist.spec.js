@@ -86,6 +86,16 @@ describe('Wlist Test', function () {
     done()
   })
 
+  it('should be able to put an item on top in an empty wlist', function (done) {
+    wlist.before(null, 'item4')
+
+    var items = wlist.get()
+    var expected = [ 'item4' ]
+
+    expect(items).to.be.eql(expected)
+    done()
+  })
+
   it('should be able to put an item first and then put another first', function (done) {
     wlist.put('item1', 'item1-name', 3)
     wlist.put('item2', 'item2-name', 2)
@@ -262,6 +272,34 @@ describe('Wlist Test', function () {
     hasItem = wlist.hasItem('item3-name')
 
     expect(hasItem).to.be.false
+    done()
+  })
+
+  it('should throw an Error if method put is called without arguments', function (done) {
+    expect(function () {
+      wlist.put()
+    }).throwError(new Error('No item is set'))
+    done()
+  })
+
+  it('should throw an Error if method "before" or "after" is called without arguments', function (done) {
+    wlist.put('item1', 'item1-name', 3)
+    wlist.put('item2', 'item2-name', 2)
+    wlist.put('item3', 'item3-name', -1)
+
+    expect(function () {
+      wlist.before('item2-name')
+    }).throwError(new Error('Parameter "item" is mandatory'))
+
+    expect(function () {
+      wlist.after('item2-name')
+    }).throwError(new Error('Parameter "item" is mandatory'))
+
+    done()
+  })
+
+  it('should return undefined if there is no items', function (done) {
+    expect(wlist.get('item-1')).to.be.undefined
     done()
   })
 })
